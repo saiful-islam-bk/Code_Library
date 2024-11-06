@@ -4,46 +4,46 @@ using namespace std;
 #define saiful_islam_bk
 const int N=3e5+9;
 
-int a[N], tree[4*N];
-void build(int node, int st, int en){
-	if(st==en){
-		tree[node]=a[st];
-		return;
-	}
-	int mid=(st+en)/2;
-	build(2*node, st, mid);
-	build(2*node+1, mid+1, en);
-	//tree[node]=tree[2*node]+tree[2*node+1];
-	tree[node]=max(tree[2*node], tree[2*node+1]);
+int a[N];
+#define lc (n << 1)
+#define rc ((n << 1) | 1)
+int t[4*N];
+static const int inf = 1e9;
+long long combine(long long a,long long b){
+    return a+b;
 }
-
-int query(int node, int st, int en, int l, int r){
-    if(st>r || en<l) return 0;
-    if(st>=l && en<=r) return tree[node];
-    
-    int mid=(st+en)/2;
-    int q1=query(2*node, st, mid, l, r);
-    int q2=query(2*node+1, mid+1, en, l, r);
-    //return q1+q2;
-    return max(q1,q2);
+void pull(int n){
+    t[n]=t[lc]+t[rc];
 }
-
-void update(int node, int st, int en, int idx, int val){
-    if(st==en){
-        a[st]=val;
-        tree[node]=val;
-        return;
+void build(int n, int b, int e) {
+    if (b == e){
+      t[n] = a[b];
+      return;
     }
-    int mid=(st+en)/2;
-    if(idx<=mid){
-        update(2*node, st, mid, idx, val);
-    }else{
-        update(2*node+1, mid+1, en, idx, val);
-    }
-    //tree[node]=tree[2*node]+tree[2*node+1];
-    tree[node]=max(tree[2*node], tree[2*node+1]);
+    int mid=(b+e)>>1;
+    build(lc, b, mid);
+    build(rc, mid + 1, e);
+    pull(n);
 }
-
+void upd(int n, int b, int e, int i, int x) {
+    if (b > i || e < i) return;
+    if (b == e && b == i) {
+      t[n] = x;
+      return;
+    }
+    int mid=(b+e)>>1;
+    upd(lc, b, mid, i, x);
+    upd(rc, mid + 1, e, i, x);
+    pull(n);
+}
+int query(int n, int b, int e, int i, int j) {
+    if (b > j || e < i) return 0;
+    if (b >= i && e <= j) return t[n];
+    int mid = (b + e) >> 1, l = n << 1, r = l | 1;
+    int L = query(l, b, mid, i, j);
+    int R = query(r, mid + 1, e, i, j);
+    return combine(L, R);
+}
 void solve(int ii){
 	int n, m; cin>>n>>m;
 	for(int i=0; i<n; i++){
@@ -60,7 +60,7 @@ int main(){
   cin.tie(0);
 	saiful_islam_bk
 	int test=1;
-	 cin>>test;
+	//  cin>>test;
 	for(int ii=1; ii<=test; ii++){
 		//cout<<"Case "<<ii<<": ";
 		solve(ii);
