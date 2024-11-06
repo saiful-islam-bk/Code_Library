@@ -2,7 +2,7 @@
 using namespace std;
 #define nl "\n"
 #define saiful_islam_bk
-const int N=1e5+9;
+const int N=3e5+9;
 
 int a[N], tree[4*N];
 void build(int node, int st, int en){
@@ -44,23 +44,25 @@ void update(int node, int st, int en, int idx, int val){
     tree[node]=max(tree[2*node], tree[2*node+1]);
 }
 
-void solve(ll ii){
-	int n; cin>>n;
+void solve(int ii){
+	int n, m; cin>>n>>m;
 	for(int i=0; i<n; i++){
 		cin>>a[i];
 	}
 	build(1, 0, n-1);
-	while(1){
+	while(m--){
 	    int p, q; cin>>p>>q;
 	    cout<<query(1, 0, n-1, p, q)<<nl;
 	}
-	//cout<<"Case "<<ii<<": ";
 }
 int main(){
   ios_base::sync_with_stdio(0);
   cin.tie(0);
 	saiful_islam_bk
-	ll test=1;
+	int test=1;
 	 cin>>test;
-	for(ll ii=1; ii<=test; ii++) solve(ii);
+	for(int ii=1; ii<=test; ii++){
+		//cout<<"Case "<<ii<<": ";
+		solve(ii);
+	}
 }
