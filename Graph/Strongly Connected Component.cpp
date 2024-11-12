@@ -18,6 +18,15 @@ void dfs2(int v){
     component.push_back(v);
     for(int u:gt[v]) if(!vis[u]) dfs2(u);
 }
+void ok(){
+    while(!st.empty()){
+        int v=st.top(); st.pop(); component.clear();
+        if(!vis[v]){
+            dfs2(v);
+            scc.push_back(component);
+        }
+    }
+}
 void solve(){
     int n, m, u, v;
     cin>>n>>m;
@@ -28,13 +37,7 @@ void solve(){
     }
     for(int i=1; i<=n; i++) if(!vis[i]) dfs1(i);
     fill(vis, vis+N, false);
-    while(!st.empty()){
-        int v=st.top(); st.pop(); component.clear();
-        if(!vis[v]){
-            dfs2(v);
-            scc.push_back(component);
-        }
-    }
+	ok();
     for(auto i:scc){
         for(auto j:i) cout<<j<<" ";
         cout<<endl;
