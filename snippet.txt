@@ -31,6 +31,7 @@
     "const int mod1=1e9+7, mod2=1e9+9;",
     "const int base1=137, base2=277;",
     "const long long int inf=1e9;",
+    "const long double eps=1e-9;",
     "#define saiful_islam_bk",
     "",
     "void solve(){",
