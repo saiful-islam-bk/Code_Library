@@ -19,28 +19,28 @@ ll ori(point a, point b, point c){
     ll val=(c.x-b.x)*(b.y-a.y)-(b.x-a.x)*(c.y-b.y);
     return val?val/abs(val):0;
 }
-vector<point> convex_hull(vector<point>&p){
-    ll m, k=1, n=p.size(); if(n<=1) return p;
-    sort(p.begin(), p.end()); vector<point>hull;
-    for(ll i=0; i<n; i++){
-        m=hull.size();
-        while(m>k && ori(hull[m-2], hull[m-1], p[i])<0){
-            hull.pop_back();
-            m=hull.size();
-        }
-        hull.push_back(p[i]);
+vector<point> convex_hull(vector<point>p){
+  ll m, k=1, n=p.size(), id=0; if(n<=1) return p;
+  sort(p.begin(), p.end()); vector<point>hull; k=hull.size();
+  for(ll i=0; i<n; i++){
+    m=hull.size();
+    while(m>=k+2 && ori(hull[m-2], hull[m-1], p[i])>=0){
+      hull.pop_back();
+      m=hull.size();
     }
-    k=hull.size();
-    for(ll i=n-2; i>=0; i--){
-        m=hull.size();
-        while(m>k && ori(hull[m-2], hull[m-1], p[i])<0){
-            hull.pop_back();
-            m=hull.size();
-        }
-        hull.push_back(p[i]);
+    hull.push_back(p[i]);
+  }
+  hull.pop_back(); k=hull.size();
+  for(ll i=n-1; i>=0; i--){
+    m=hull.size();
+    while(m>=k+2 && ori(hull[m-2], hull[m-1], p[i])>=0){
+      hull.pop_back();
+      m=hull.size();
     }
-    hull.pop_back();
-    return hull;
+    hull.push_back(p[i]);
+  }
+  hull.pop_back();
+  return hull;
 }
 void solve(){
     ll n; cin>>n; vector<point>p(n);
