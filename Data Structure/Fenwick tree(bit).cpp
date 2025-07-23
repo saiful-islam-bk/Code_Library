@@ -43,14 +43,14 @@ struct bit{
     return ans;
   }
   T k_th(T k){
-  	int sum=0, pos=0;
-  	for(int i=__lg(N-1); i>=0; i--){
-  		if(pos+(1<<i)<N and sum+v[pos+(1<<i)]<k){
-  			sum+=v[pos+(1<<i)];
-  			pos+=(1<<i);
-  		}
-  	}
-  	return pos+1;
+    int sum=0, pos=0;
+    for(int i=__lg(N-1); i>=0; i--){
+  	  if(pos+(1<<i)<N and sum+v[pos+(1<<i)]<k){
+  		  sum+=v[pos+(1<<i)];
+  		  pos+=(1<<i);
+      }
+    }
+    return pos+1;
   }
 };
 
