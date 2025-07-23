@@ -32,6 +32,26 @@ struct bit{
   T query(T l, T r){
     return query(r)-query(l-1);
   }
+
+  T kth(T k){
+    int l=1, r=N-1, ans=-1;
+    while(l<=r){
+      T m=(l+r)>>1;
+      if(sum(m)>=k) ans=m, r=m-1;
+      else l=m+1;
+    }
+    return ans;
+  }
+  T k_th(T k){
+  	int sum=0, pos=0;
+  	for(int i=__lg(N-1); i>=0; i--){
+  		if(pos+(1<<i)<N and sum+v[pos+(1<<i)]<k){
+  			sum+=v[pos+(1<<i)];
+  			pos+=(1<<i);
+  		}
+  	}
+  	return pos+1;
+  }
 };
 
 void solve(){
