@@ -5,85 +5,94 @@ using namespace std;
 const int N=1e5+5;
 #define saiful_islam_bk
 class vertex{
-public:
-char alphabet;
-	vector<vertex*>child;
-	bool exist;
-	int cnt;
-	vertex(char a):alphabet(a), exist(false){child.assign(26, NULL), cnt=0;}
+  public:
+  bool exist; int cnt;
+  vector<vertex*>next;
+  vertex(){
+    exist=false;
+    next.assign(26, NULL);  // change there if string is number
+    cnt=0;
+  }
 };
 class Trie{
-private:
-	vertex* root;
-public:
-	Trie(){ root=new vertex('!');}
-	void insert(string word){
-		vertex* cur=root;
-		for(int i=0; i<word.size(); i++){
-			int id=word[i]-'a';
-			if(cur->child[id]==NULL) cur->child[id]=new vertex(word[i]);
-			cur=cur->child[id];
-			cur->cnt++;
-		}
-		cur->exist=true;
-	}
-	void deleteString(vertex* cur, const string& word, int depth=0){
-    	if(depth==word.size()){
-        	if(cur->exist){
-        	    cur->exist=false;
-        	    cur->cnt--;
-        	}
-        	return;
-    	}
-    	int id=word[depth]-'a';
-    	if(cur->child[id]!=NULL){
-    	    deleteString(cur->child[id], word, depth + 1);
-    	    cur->cnt--;
-    	    if(cur->child[id]->cnt==0){
-    	        delete cur->child[id];
-    	        cur->child[id]=NULL;
-    	    }
-    	}
-	}
-	void del(string word){
-    	deleteString(root, word);
-	}
-	bool search(string word){
-		vertex* cur=root;
-		for(int i=0; i<word.size(); i++){
-			int id=word[i]-'a';
-			if(cur->child[id]==NULL) return false;
-			cur=cur->child[id];
-		}
-		return cur->exist;
-	}
-	int countPrefix(string prefix){
-		vertex* cur=root;
-		for(int i=0; i<prefix.size(); i++){
-			int id=prefix[i]-'a';
-			if(cur->child[id]==NULL) return 0;
-			cur=cur->child[id];
-		}
-		return cur->cnt;
-	}
-	string lcp(){ // longest common prefix
-    	string prefix="";
-    	vertex* cur=root;
-    	while(true){
-    	    int numChildren=0, id=-1;
-    	    for(int i=0; i<26; ++i){
-    	        if(cur->child[i]!=NULL){
-    	            numChildren++;
-    	            id=i;
-    	        }
-    	    }
-    	    if(numChildren!=1 || cur->exist) break;
-        	cur=cur->child[id];
-        	prefix+=cur->alphabet;
-    	}
-    	return prefix;
-	}
-
+  private:
+    vertex* root;
+    char c='a';
+    int sz=26;  // change there if string is number
+    void del(vertex* cur, string s, int id=0){  // delete string from trie
+      if(s.size()==id){
+        cur->exist=false;
+        cur->cnt--;
+        return;
+      }
+      if(cur->next[s[id]-c]!=NULL){
+        del(cur->next[s[id]-c], s, id+1);
+        cur->cnt--;
+        if(cur->next[s[id]-c]->cnt==0){
+          delete(cur);
+          cur->next[s[id]-c]=NULL;
+        }
+      }
+    }
+    void del(vertex* cur){  // delete cur vertex
+      for(int i=0; i<sz; i++){
+        if(cur->next[i]!=NULL) del(cur->next[i]);
+      }
+      delete(cur);
+    }
+  public:
+    Trie(){root=new vertex();}
+    void insert(string s){  // insert a string on trie
+      vertex* cur=root;
+      for(int i=0; i<s.size(); i++){
+        if(cur->next[s[i]-c]==NULL)
+          cur->next[s[i]-c]=new vertex();
+        cur=cur->next[s[i]-c];
+        cur->cnt++;
+      }
+      cur->exist=true;
+    }
+    bool search(string s){  // search a string on trie
+      vertex* cur=root;
+      for(int i=0; i<s.size(); i++){
+        if(cur->next[s[i]-c]==NULL) return false;
+        cur=cur->next[s[i]-c];
+      }
+      return cur->exist;
+    }
+    int count_prefix(string s){ // count prefix of string s
+      vertex* cur=root;
+      for(int i=0; i<s.size(); i++){
+        if(cur->next[s[i]-c]==NULL) return 0;
+        cur=cur->next[s[i]-c];
+      }
+      return cur->cnt;
+    }
+    string lcp(){   // return longest common prefix of trie
+      vertex* cur=root;
+      string pre="";
+      while(1){
+        int n=0, id=0;
+        for(int i=0; i<sz; i++){
+          if(cur->next[i]!=NULL){
+            n++;
+            id=i;
+          }
+        }
+        if(n==1) pre+=(id+c);
+        if(n>1 || cur->exist) break;
+        cur=cur->next[id];
+      }
+      return pre;
+    }
+    void erase(string s){ // delete a string on trie;
+      vertex* cur=root;
+      if(search(s)) del(cur, s);
+    }
+    void clear(){ // erase full trie;
+      vertex* cur=root;
+      del(cur);
+    }
 };
 void solve(){
     Trie trie;
