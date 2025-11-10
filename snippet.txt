@@ -3,10 +3,10 @@
   "prefix": "saiful",
   "body": [
     "#include<bits/stdc++.h>",
+    "using namespace std;",
+    "//using namespace __gnu_pbds;",
     "//#include<ext/pb_ds/assoc_container.hpp>",
     "//#include<ext/pb_ds/tree_policy.hpp>",
-    "//using namespace __gnu_pbds;",
-    "using namespace std;",
     "// typedef long long int ll;",
     "// typedef pair<ll, ll>pll;",
     "#define int long long int",
@@ -30,14 +30,12 @@
     "const int base1=137, base2=277;",
     "const int inf=1e9;",
     "const long double eps=1e-9;",
-    "#define saiful_islam_bk",
+    "#define saiful_islam_bk ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);",
     "",
     "void solve(){",
     "  ",
     "}",
     "int32_t main(){",
-    "  ios_base::sync_with_stdio(0);",
-    "  cin.tie(0); cout.tie(0);",
     " saiful_islam_bk",
     " int test=1;",
     "  cin>>test;",
@@ -88,9 +86,9 @@
 "6": {
   "prefix": "arin",
   "body": [
-    "int n, m=0, k=0, ans=0; cin>>n; int a[n];",
+    "int n, m=0, k=0, ans=0; cin>>n; vector<int>v(n);",
     "for(int i=0; i<n; i++){",
-    "  cin>>a[i];",
+    "  cin>>v[i];",
     "}"
   ],
   "description": "6"
