@@ -1,0 +1,25 @@
+//first use sieve for primes upto 1e6, then compute this algorithm in each query, its return all divisors of n
+vector<int>ok(int n){
+  vector<pair<int,int>>f;
+  for(int p:primes){
+    if(p*p>n) break;
+    if(n%p==0){
+      int c=0;
+      while(n%p==0) n/=p, c++;
+      f.push_back({p, c});
+    }
+  }
+  if(n>1) f.push_back({n, 1});
+  vector<int>d={1};
+  for(auto [p, c]:f){
+    int sz=d.size();
+    int cur=1;
+    for(int i=1; i<=c; i++){
+      cur*=p;
+      for(int j=0; j<sz; j++)
+        d.push_back(d[j]*cur);
+    }
+  }
+  sort(d.begin(), d.end());
+  return d;
+}
