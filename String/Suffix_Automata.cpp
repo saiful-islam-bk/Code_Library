@@ -41,6 +41,11 @@ struct automata{
       }
     last=cur;
     }
+    vector<int>ord(sz), cnt(s.size()+1, 0);
+    for(int i=0; i<sz; i++) cnt[node[i].len]++;
+    for(int i=1; i<=s.size(); i++) cnt[i]+=cnt[i-1];
+    for(int i=sz-1; i>=0; i--) ord[--cnt[node[i].len]]=i;
+    for(int i=sz-1; i>0; i--) node[node[ord[i]].link].oc+=node[ord[i]].oc;
   }
   vector<int>ok(vector<int>s){  //for problem 'E' in contest https://toph.co/c/inter-university-buet-cse-fest-2026
     vector<int>ans;
